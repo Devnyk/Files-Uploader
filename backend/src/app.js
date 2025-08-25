@@ -9,6 +9,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors()); // allow requests from frontend
+app.use(express.static("public"));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -45,6 +46,10 @@ app.post("/posts", upload.single("watch"), async (req, res) => {
 app.get("/posts", async (req, res) => {
   const posts = await postModel.find();
   res.json({ posts });
+});
+
+app.get("*name", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "/public/index.html"));
 });
 
 module.exports = app;
